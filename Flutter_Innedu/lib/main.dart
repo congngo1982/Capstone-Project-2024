@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -10,7 +11,16 @@ import 'onboarded/get_started_page.dart';
 import 'onboarded/onboard_page.dart';
 import 'onboarded/splash.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // try {
+  //   await Firebase.initializeApp();
+  // } catch (e) {
+  //   print('Error initializing Firebase: $e');
+  // }
+
+  // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -34,8 +44,7 @@ class _MyAppState extends State<MyApp> {
           ],
           builder: (_, context) {
             return MaterialApp(
-              debugShowCheckedModeBanner: false,
-              initialRoute: "splash",
+              home: SplashScreen(),
               routes: {
                 'splash': (context) => const SplashScreen(),
                 'onboard': (context) => const OnBoardingScreen(),

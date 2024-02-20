@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
 import '../../model/theme_model.dart';
+import '../authentication/global_method.dart';
 
 class ExploreScreen extends StatefulWidget {
   const ExploreScreen({super.key});
@@ -13,7 +16,35 @@ class ExploreScreen extends StatefulWidget {
 class _ExploreScreenState extends State<ExploreScreen> {
 
   ColorNotifire notifier = ColorNotifire();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  GlobalMethods _globalMethods = GlobalMethods();
+  bool _isLoading = false;
+  @override
+  void dispose() {
+    super.dispose();
+  }
+  Future<void> _googleSignIn() async {
+    final googleSignIn = GoogleSignIn();
+    final googleAccount = await googleSignIn.signIn();
+    if (googleAccount != null) {
+      final googleAuth = await googleAccount.authentication;
+      if (googleAuth.accessToken != null && googleAuth.idToken != null) {
+        try {
+          var date = DateTime.now().toString();
+          var dateparse = DateTime.parse(date);
+          var formattedDate =
+              "${dateparse.day}-${dateparse.month}-${dateparse.year}";
+          final authResult = await _auth.signInWithCredential(
+              GoogleAuthProvider.credential(
+                  idToken: googleAuth.idToken,
+                  accessToken: googleAuth.accessToken));
 
+        } catch (error) {
+          _globalMethods.authErrorHandle(error.toString(), context);
+        }
+      }
+    }
+  }
   @override
   Widget build(BuildContext context) {
     notifier = Provider.of<ColorNotifire>(context, listen: true);
@@ -126,7 +157,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                           BorderSide(color: notifier.buttonBorder, width: 1.5),
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: _googleSignIn,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

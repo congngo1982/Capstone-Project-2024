@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "931947255112",
+    "project_id": "innedu-cd1cb",
+    "storage_bucket": "innedu-cd1cb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:931947255112:android:fa99149e959d768a4b0f7d",
+        "android_client_info": {
+          "package_name": "com.example.innedu"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFKHiBfNi9obzlGZl_djf_eh9Lk-JX5jw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
