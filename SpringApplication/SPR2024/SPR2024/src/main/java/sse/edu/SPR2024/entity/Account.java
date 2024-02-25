@@ -29,6 +29,6 @@ public class Account {
     private Date birthDate;
     private String currentLoginAddress;
     @ManyToOne
-    @JoinColumn(name = "role_id", nullable = false)
+    @JoinColumn(name = "role_id")
     private Role role;
 }
