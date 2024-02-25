@@ -26,9 +26,26 @@ public class Account {
     private String fullName;
     private String address;
     private String gender;
+    private Integer age;
     private Date birthDate;
     private String currentLoginAddress;
+
+    // set many to one to other table----------------------------------------
+
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
+
+    //learner
+    @OneToOne(mappedBy = "account",cascade = CascadeType.ALL)
+    private Learner learner;
+
+    //moderator
+    @OneToOne(mappedBy = "account",cascade = CascadeType.ALL)
+    private Moderator moderator;
+
+    //mentor
+    @OneToOne(mappedBy = "account",cascade = CascadeType.ALL)
+    private Mentor mentor;
+
 }

@@ -18,6 +18,10 @@ public class Role {
     @Column(name = "role_id")
     private long Id;
     private String name;
+
+    //connect to other table
+
+    // role
     @OneToMany(mappedBy = "role")
     private List<Account> accounts;
 }
