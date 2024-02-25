@@ -33,7 +33,7 @@ public class Account {
     // set many to one to other table----------------------------------------
 
     @ManyToOne
-    @JoinColumn(name = "role_id", nullable = false)
+    @JoinColumn(name = "role_id")
     private Role role;
 
     //learner

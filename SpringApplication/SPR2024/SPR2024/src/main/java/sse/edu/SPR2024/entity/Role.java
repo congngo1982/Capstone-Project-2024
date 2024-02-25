@@ -1,5 +1,6 @@
 package sse.edu.SPR2024.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,5 +24,6 @@ public class Role {
 
     // role
     @OneToMany(mappedBy = "role")
+    @JsonIgnore
     private List<Account> accounts;
 }
