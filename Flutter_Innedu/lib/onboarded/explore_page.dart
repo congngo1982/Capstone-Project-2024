@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../../model/theme_model.dart';
 import '../authentication/global_method.dart';
+import '../provider/google_sign_in.dart';
 
 class ExploreScreen extends StatefulWidget {
   const ExploreScreen({super.key});
@@ -16,35 +17,35 @@ class ExploreScreen extends StatefulWidget {
 class _ExploreScreenState extends State<ExploreScreen> {
 
   ColorNotifire notifier = ColorNotifire();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  GlobalMethods _globalMethods = GlobalMethods();
+  // final FirebaseAuth _auth = FirebaseAuth.instance;
+  // GlobalMethods _globalMethods = GlobalMethods();
   bool _isLoading = false;
   @override
   void dispose() {
     super.dispose();
   }
-  Future<void> _googleSignIn() async {
-    final googleSignIn = GoogleSignIn();
-    final googleAccount = await googleSignIn.signIn();
-    if (googleAccount != null) {
-      final googleAuth = await googleAccount.authentication;
-      if (googleAuth.accessToken != null && googleAuth.idToken != null) {
-        try {
-          var date = DateTime.now().toString();
-          var dateparse = DateTime.parse(date);
-          var formattedDate =
-              "${dateparse.day}-${dateparse.month}-${dateparse.year}";
-          final authResult = await _auth.signInWithCredential(
-              GoogleAuthProvider.credential(
-                  idToken: googleAuth.idToken,
-                  accessToken: googleAuth.accessToken));
-
-        } catch (error) {
-          _globalMethods.authErrorHandle(error.toString(), context);
-        }
-      }
-    }
-  }
+  // Future<void> _googleSignIn() async {
+  //   final googleSignIn = GoogleSignIn();
+  //   final googleAccount = await googleSignIn.signIn();
+  //   if (googleAccount != null) {
+  //     final googleAuth = await googleAccount.authentication;
+  //     if (googleAuth.accessToken != null && googleAuth.idToken != null) {
+  //       try {
+  //         var date = DateTime.now().toString();
+  //         var dateparse = DateTime.parse(date);
+  //         var formattedDate =
+  //             "${dateparse.day}-${dateparse.month}-${dateparse.year}";
+  //         final authResult = await _auth.signInWithCredential(
+  //             GoogleAuthProvider.credential(
+  //                 idToken: googleAuth.idToken,
+  //                 accessToken: googleAuth.accessToken));
+  //
+  //       } catch (error) {
+  //         _globalMethods.authErrorHandle(error.toString(), context);
+  //       }
+  //     }
+  //   }
+  // }
   @override
   Widget build(BuildContext context) {
     notifier = Provider.of<ColorNotifire>(context, listen: true);
@@ -63,7 +64,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                 children: [
                   Image.asset(
                     "assets/images/splash_logo.png",
-                    color: notifier.imageColor,
+
                     width: width / 9,
                     height: height / 15,
                   ),
@@ -107,6 +108,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
               ),
               SizedBox(height: MediaQuery.of(context).size.height / 55),
               Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Container(
                     height: MediaQuery.of(context).size.height / 12,
@@ -139,6 +141,48 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     ),
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height / 55),
+
+                  Container(
+                    height: MediaQuery.of(context).size.height / 12,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(25),
+                    ),
+                    child: GestureDetector(
+                      onTap: () async {
+                        await GoogleSignInProvider().signInWithGoogle(context);
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(25),
+                          border: Border.all(color: notifier.buttonBorder, width: 1.5),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              "assets/images/google_logo.png",
+                              scale: 2.5,
+                            ),
+                            SizedBox(
+                              width: width / 40,
+                            ),
+                            const Text(
+                              "Continue With Google",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontFamily: 'Manrope_bold',
+                                color: Color(0xff0F172A),
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height / 55),
                   Container(
                     height: MediaQuery.of(context).size.height / 12,
                     width: double.infinity,
@@ -157,19 +201,19 @@ class _ExploreScreenState extends State<ExploreScreen> {
                           BorderSide(color: notifier.buttonBorder, width: 1.5),
                         ),
                       ),
-                      onPressed: _googleSignIn,
+                      onPressed: () {},
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Image.asset(
-                            "assets/images/google_logo.png",
-                            scale: 2.5,
+                            "assets/images/apple.png",
+                            scale: 8,
                           ),
                           SizedBox(
                             width: width / 40,
                           ),
                           const Text(
-                            "Continue With Google",
+                            "Continue With IOS",
                             style: TextStyle(
                               fontSize: 16,
                               fontFamily: 'Manrope_bold',
@@ -205,14 +249,14 @@ class _ExploreScreenState extends State<ExploreScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Image.asset(
-                            "assets/images/facebook_logo.png",
-                            scale: 2.5,
+                            "assets/images/people.png",
+                            scale: 12,
                           ),
                           SizedBox(
                             width: width / 40,
                           ),
                           const Text(
-                            "Continue With Facebook",
+                            "Continue With Guest",
                             style: TextStyle(
                               fontSize: 16,
                               fontFamily: 'Manrope_bold',
@@ -235,7 +279,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "New to SkillMaster?",
+                      "New to InnEdu?",
                       style: TextStyle(
                         fontSize: 14,
                         fontFamily: 'Manrope_bold',

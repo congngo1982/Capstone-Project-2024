@@ -74,7 +74,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                     Navigator.of(context).pushNamed("explore");
                   },
                   child: const Text(
-                    "Continue With Email",
+                    "Tap to join us",
                     style: TextStyle(
                       fontFamily: 'Manrope_bold',
                       fontSize: 16,
@@ -85,6 +85,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                   ),
                 ),
               ),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -170,35 +171,35 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: height / 35),
-              GestureDetector(
-                onTap: (){
-                  Navigator.of(context).pushNamed("sign_up");
-                },
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "New to Innedu?",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontFamily: 'Manrope_bold',
-                        color: Color(0xff64748B),
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    Text(
-                      " Create Account",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontFamily: 'Manrope_bold',
-                        color: Color(0xff0056D2),
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              // SizedBox(height: height / 35),
+              // GestureDetector(
+              //   onTap: (){
+              //     Navigator.of(context).pushNamed("sign_up");
+              //   },
+              //   child: const Row(
+              //     mainAxisAlignment: MainAxisAlignment.center,
+              //     children: [
+              //       Text(
+              //         "New to Innedu?",
+              //         style: TextStyle(
+              //           fontSize: 14,
+              //           fontFamily: 'Manrope_bold',
+              //           color: Color(0xff64748B),
+              //           fontWeight: FontWeight.w700,
+              //         ),
+              //       ),
+              //       Text(
+              //         " Create Account",
+              //         style: TextStyle(
+              //           fontSize: 14,
+              //           fontFamily: 'Manrope_bold',
+              //           color: Color(0xff0056D2),
+              //           fontWeight: FontWeight.w700,
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
             ],
           ),
         ),

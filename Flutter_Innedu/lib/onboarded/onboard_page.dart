@@ -133,7 +133,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                           ),
                         ),
                         onPressed: () {
-                          Navigator.of(context).pushNamed("get_started");
+                          Navigator.of(context).pushNamed("explore");
                         },
                         child: const Text(
                           "Get Started",
