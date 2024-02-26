@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../model/theme_model.dart';
 import '../../model/profile_model.dart';
+import '../provider/google_sign_in.dart';
+import '../screens/account and setting/detail_profile.dart';
+import '../screens/account and setting/payment_account.dart';
+import '../widget/button.dart';
 import '../widget/profile_details.dart'; // Import your profile model
 
 class MyAccount extends StatefulWidget {
@@ -17,7 +21,8 @@ class _MyAccountState extends State<MyAccount> {
   @override
   Widget build(BuildContext context) {
     notifier = Provider.of<ColorNotifire>(context, listen: true);
-
+    var width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: notifier.background,
       appBar: AppBar(
@@ -56,17 +61,21 @@ class _MyAccountState extends State<MyAccount> {
                       // Function to be executed when the arrow icon is pressed.
                       // You can navigate to a specific page here.
                       // Example:
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DetailPage(profile: profile),
-                        ),
-                      );
+                      NavigationUtility.navigateToProfilePage(context, profile);
                     },
                   );
                 },
               ),
+              SizedBox(height: MediaQuery.of(context).size.height / 55),
+              button(
+                onPress: (){
+                  GoogleSignInProvider().signOut(context);
+                },
+                text: "Logout",
+                color: const Color(0xff0056D2),
+              ),
             ],
+
           ),
         ),
       ),
@@ -75,21 +84,46 @@ class _MyAccountState extends State<MyAccount> {
 }
 
 // Example DetailPage Widget
-class DetailPage extends StatelessWidget {
-  final ProfileDetails profile;
-
-  const DetailPage({Key? key, required this.profile}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    // Implement the UI for the detailed page using the 'profile' parameter
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(profile.name),
-      ),
-      body: Center(
-        child: Text(profile.desc),
-      ),
-    );
+class NavigationUtility {
+  static void navigateToProfilePage(BuildContext context, ProfileDetails profile) {
+    // Use a switch statement or if-else conditions to navigate to different pages based on the selected profile.
+    switch (profile.type) {
+      case "Type1":
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const ProfileDetail(),
+          ),
+        );
+        break;
+      case "Type3":
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const PaymentMethod(),
+          ),
+        );
+        break;
+      case "Type4":
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const PaymentMethod(),
+          ),
+        );
+        break;
+      // case ProfileType.Type2:
+      //   Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //       builder: (context) => AnotherDetailPage(profile: profile),
+      //     ),
+      //   );
+      //   break;
+    // Add more cases for other profile types as needed.
+      default:
+      // Default case, navigate to a default page or do nothing.
+        break;
+    }
   }
 }

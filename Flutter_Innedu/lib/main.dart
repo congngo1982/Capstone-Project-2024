@@ -1,10 +1,13 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:innedu/screens/account%20and%20setting/detail_profile.dart';
+import 'package:innedu/screens/account%20and%20setting/personal_data_edit.dart';
 import 'package:provider/provider.dart';
 
 import 'authentication/login_page.dart';
 import 'authentication/sign_up_page.dart';
 import 'home/home_page.dart';
+import 'home/my_account.dart';
 import 'model/theme_model.dart';
 import 'onboarded/explore_page.dart';
 import 'onboarded/get_started_page.dart';
@@ -53,6 +56,9 @@ class _MyAppState extends State<MyApp> {
                 'login': (context) => const LoginScreen(),
                 'sign_up': (context) => const SignUpScreen(),
                 'home': (context) => const HomeScreen(),
+                'edit': (context) => const PersonalData(),
+                'detailProfile': (context) => const ProfileDetail(),
+                'my_account': (context) => const MyAccount(),
               },
             );
           },

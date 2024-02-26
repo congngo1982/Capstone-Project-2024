@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:innedu/screens/account%20and%20setting/personal_data_edit.dart';
 import 'package:provider/provider.dart';
 
 import '../../model/theme_model.dart';
@@ -181,7 +182,9 @@ class _ProfileDetailState extends State<ProfileDetail> {
             ),
           ),
         ),
-        onPressed: onPress,
+        onPressed: (){
+          Navigator.of(context).pushNamed("edit");
+        },
         child: const Text(
           "Edit Profile",
           style: TextStyle(
