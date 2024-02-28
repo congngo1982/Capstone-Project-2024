@@ -20,7 +20,6 @@ public class FeedBackCourse {
     private String comment;
 
     //connect to other table
-
     //lesson
     @ManyToOne
     @JoinColumn(name = "lesson_id", nullable = false)

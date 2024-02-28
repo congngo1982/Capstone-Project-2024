@@ -15,9 +15,11 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name = "gcp_role")
 public class Role {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "role_id")
-    private long Id;
+    private Long id;
     private String name;
 
     //connect to other table

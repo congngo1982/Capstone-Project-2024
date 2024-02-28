@@ -20,7 +20,6 @@ public class Mentor {
     private String id;
     private String imgUrl;
 
-
     //connect to other table
     //account
     @OneToOne

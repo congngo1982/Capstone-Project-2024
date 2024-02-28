@@ -26,7 +26,8 @@ public class AccountController {
 
     @PostMapping("/auth/account_create")
     public ResponseEntity<String> CreateAccount() {
-        Account account = new Account("ngonc", "ngonc@gmail.com", Bcrypt.hashPassword("ngonc"), "NgoNC", null, null, null, null, null);
+        //Account account = new Account("ngonc", "ngonc@gmail.com", Bcrypt.hashPassword("ngonc"), "NgoNC", null, null, null, null, null);
+        Account account = new Account();
         accountService.CreateAccount(account);
         return new ResponseEntity<>("Account Create Successfully", HttpStatus.OK);
     }
@@ -46,4 +47,6 @@ public class AccountController {
         String token = jwtGenerator.generateToken(authentication);
         return new ResponseEntity<>(new AuthResponseDTO(token), HttpStatus.OK);
     }
+
+
 }

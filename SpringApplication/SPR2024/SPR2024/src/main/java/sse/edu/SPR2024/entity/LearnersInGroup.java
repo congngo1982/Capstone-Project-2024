@@ -18,7 +18,6 @@ public class LearnersInGroup {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String status;
 
     //connect to other table
