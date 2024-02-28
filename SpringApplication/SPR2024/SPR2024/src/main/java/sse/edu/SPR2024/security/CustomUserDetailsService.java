@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import sse.edu.SPR2024.entity.Account;
 import sse.edu.SPR2024.entity.Role;
+import sse.edu.SPR2024.service.IAccountRoleService;
 import sse.edu.SPR2024.service.IAccountService;
 
 import java.util.ArrayList;
@@ -18,17 +19,21 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class CustomUserDetailsService  implements UserDetailsService {
+public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
     private IAccountService accountService;
+    @Autowired
+    private IAccountRoleService accountRoleService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Account user = accountService.GetAccountByEmail(username);
         System.out.println(user.getEmail());
-        List<Role> role = new ArrayList();
-        role.add(user.getRole());
+
+
+        List<Role> roles = accountRoleService.getRoleByAccountEmail(user.getEmail());
+        List<Role> role = roles != null && roles.size() > 0 ? roles : new ArrayList<>();
         return new User(user.getEmail(), user.getPassword(), mapRolesToAuthorities(role));
     }
 

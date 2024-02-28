@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter@Setter
@@ -21,5 +22,9 @@ public class Role {
     @Column(name = "role_id")
     private Long id;
     private String name;
+
+    @OneToMany(mappedBy = "role")
+    @JsonIgnore
+    private Set<AccountRole> roles;
 
 }
