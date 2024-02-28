@@ -12,6 +12,7 @@ import sse.edu.SPR2024.entity.AccountRole;
 import sse.edu.SPR2024.entity.Role;
 import sse.edu.SPR2024.exception.CustomException;
 import sse.edu.SPR2024.repository.IAccountRepository;
+import sse.edu.SPR2024.repository.IAccountRoleRepository;
 import sse.edu.SPR2024.repository.IRoleRepository;
 import sse.edu.SPR2024.service.IAccountService;
 
@@ -29,6 +30,8 @@ public class AccountService implements IAccountService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private IRoleRepository roleRepository;
+    @Autowired
+    private IAccountRoleRepository accountRoleRepository;
     @Autowired
     private ModelMapper modelMapper;
 
@@ -140,7 +143,6 @@ public class AccountService implements IAccountService {
         account.setGender(registerDTO.getGender());
 
         //create role for employee
-      //  Set<Role> roles= new HashSet<>();
         Role role= roleRepository.findByName("ROLE_EMPLOYEE")
                 .orElseThrow(()->new CustomException(HttpStatus.BAD_REQUEST,"This role does not exists!"));
         AccountRole accountRole = new AccountRole();
@@ -149,9 +151,9 @@ public class AccountService implements IAccountService {
         Set<AccountRole> roles = new HashSet<>();
         roles.add(accountRole);
         account.setRoles(roles);
-        //account.setRoles(roles);
-        //save to database
         accountRepository.save(account);
+        accountRoleRepository.save(accountRole);
+
         //
         return "Manager register is successful!!";
     }
