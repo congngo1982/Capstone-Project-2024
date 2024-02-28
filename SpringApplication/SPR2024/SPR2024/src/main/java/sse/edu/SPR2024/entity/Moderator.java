@@ -17,7 +17,6 @@ public class Moderator {
 
     @Id
     private String id;
-
     private String imgUrl;
 
     //connect to other table

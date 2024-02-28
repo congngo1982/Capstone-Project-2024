@@ -16,10 +16,10 @@ import lombok.Setter;
 public class AvatarAchieve {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  Long id;
 
     // connect to other tables
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "learner_id", nullable = false)
     private Learner learner;

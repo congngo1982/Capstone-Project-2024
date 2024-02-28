@@ -19,7 +19,6 @@ public class Attempt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private Date startTime;
     private Date endTIme;
     private Long score;

@@ -15,8 +15,8 @@ import lombok.Setter;
 public class GroupCourse {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     //connect to other table
     //group
     @ManyToOne
