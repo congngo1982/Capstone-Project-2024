@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import sse.edu.SPR2024.entity.Account;
 import sse.edu.SPR2024.entity.Role;
-import sse.edu.SPR2024.service.IAccountRoleService;
+import sse.edu.SPR2024.service.IRoleService;
 import sse.edu.SPR2024.service.IAccountService;
 
 import java.util.ArrayList;
@@ -24,15 +24,18 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private IAccountService accountService;
     @Autowired
-    private IAccountRoleService accountRoleService;
+    private IRoleService roleService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Account user = accountService.GetAccountByEmail(username);
-        System.out.println(user.getEmail());
-
-
-        List<Role> roles = accountRoleService.getRoleByAccountEmail(user.getEmail());
+        System.out.println("Custom User: " + user.getEmail());
+        List<Role> roles = roleService.getRoleByAccountEmail(user.getEmail());
+        try{
+            System.out.println("Custom User: OK" + roles.get(0).getName());
+        }catch (Exception e){
+            System.out.println("CC");
+        }
         List<Role> role = roles != null && roles.size() > 0 ? roles : new ArrayList<>();
         return new User(user.getEmail(), user.getPassword(), mapRolesToAuthorities(role));
     }

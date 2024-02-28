@@ -9,12 +9,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import sse.edu.SPR2024.entity.Account;
 import sse.edu.SPR2024.entity.Role;
-import sse.edu.SPR2024.service.IAccountRoleService;
+import sse.edu.SPR2024.service.IRoleService;
 import sse.edu.SPR2024.service.IAccountService;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 @Component
 public class UserInfoDetailService implements UserDetailsService {
@@ -22,13 +21,13 @@ public class UserInfoDetailService implements UserDetailsService {
     @Autowired
     private IAccountService iAccountService;
     @Autowired
-    private IAccountRoleService accountRoleService;
+    private IRoleService accountRoleService;
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Account account = iAccountService.GetAccountByEmail(email);
         List<Role> accountRoles = accountRoleService.getRoleByAccountEmail(email);
         List<Role> hasRoles = accountRoles != null && accountRoles.size() > 0 ? accountRoles : null;
-
+        System.out.println("UserInfo: " + hasRoles == null);
         List<SimpleGrantedAuthority> roles = hasRoles == null ? Collections.emptyList() :
                 hasRoles
                         .stream()

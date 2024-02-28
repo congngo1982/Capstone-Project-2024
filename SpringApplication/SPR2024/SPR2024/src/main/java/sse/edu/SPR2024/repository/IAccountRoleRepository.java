@@ -10,5 +10,5 @@ import java.util.Optional;
 
 @Repository
 public interface IAccountRoleRepository extends JpaRepository<AccountRole, Long> {
-    public List<Role> getByAccount_Email(String email);
+    public List<AccountRole> getByAccount_Email(String email);
 }

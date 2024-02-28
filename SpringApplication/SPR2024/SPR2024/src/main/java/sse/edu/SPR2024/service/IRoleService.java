@@ -4,6 +4,6 @@ import sse.edu.SPR2024.entity.Role;
 
 import java.util.List;
 
-public interface IAccountRoleService {
+public interface IRoleService {
     public List<Role> getRoleByAccountEmail(String email);
 }
