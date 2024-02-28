@@ -22,10 +22,4 @@ public class Role {
     private Long id;
     private String name;
 
-    //connect to other table
-
-    // role
-    @OneToMany(mappedBy = "role")
-    @JsonIgnore
-    private List<Account> accounts;
 }
