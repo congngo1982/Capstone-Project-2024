@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter@Setter
@@ -22,8 +23,9 @@ public class Role {
     private Long id;
     private String name;
 
-    // role
     @OneToMany(mappedBy = "role")
     @JsonIgnore
-    private List<Account> accounts;
+    private Set<AccountRole> roles;
+
+
 }

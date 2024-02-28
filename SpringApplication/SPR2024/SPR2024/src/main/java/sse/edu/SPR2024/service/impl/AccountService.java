@@ -22,18 +22,22 @@ import java.util.stream.Collectors;
 @Service
 public class AccountService implements IAccountService {
 
+    @Autowired
     private IAccountRepository accountRepository;
+    @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
     private IRoleRepository roleRepository;
+    @Autowired
     private ModelMapper modelMapper;
 
-    @Autowired
-    public AccountService(IAccountRepository accountRepository, PasswordEncoder passwordEncoder, IRoleRepository roleRepository, ModelMapper modelMapper) {
-        this.accountRepository = accountRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.roleRepository=roleRepository;
-        this.modelMapper=modelMapper;
-    }
+//    @Autowired
+//    public AccountService(IAccountRepository accountRepository, PasswordEncoder passwordEncoder, IRoleRepository roleRepository, ModelMapper modelMapper) {
+//        this.accountRepository = accountRepository;
+//        this.passwordEncoder = passwordEncoder;
+//        this.roleRepository=roleRepository;
+//        this.modelMapper=modelMapper;
+//    }
 
     @Override
     public Account GetAccountByEmail(String email) {
@@ -53,6 +57,7 @@ public class AccountService implements IAccountService {
     public String createManager(RegisterDTO registerDTO) {
 
         //check if manager exists
+
         if(accountRepository.existsByUserId(registerDTO.getUserId())){
             throw  new CustomException(HttpStatus.BAD_REQUEST,"UserId already exists!");
         }

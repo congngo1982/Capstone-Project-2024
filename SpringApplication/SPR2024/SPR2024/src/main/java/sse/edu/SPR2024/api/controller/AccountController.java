@@ -40,6 +40,7 @@ public class AccountController {
 
     @GetMapping("/auth/getAccount")
     public ResponseEntity<Account> GetAccount() {
+        System.out.println("KAKAKA");
         Account account = accountService.GetAccountByEmail("ngonc@gmail.com");
         return new ResponseEntity<>(account, HttpStatus.OK);
     }

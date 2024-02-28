@@ -1,5 +1,6 @@
 package sse.edu.SPR2024.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -32,9 +33,10 @@ public class Account {
 
     // set many to one to other table----------------------------------------
 
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    private Role role;
+    @OneToMany(mappedBy = "account")
+    @JsonIgnore
+    private Set<AccountRole> roles;
+
 
     //learner
     @OneToOne(mappedBy = "account",cascade = CascadeType.ALL)
