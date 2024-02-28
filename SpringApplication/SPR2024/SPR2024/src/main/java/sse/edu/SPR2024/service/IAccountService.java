@@ -11,6 +11,7 @@ public interface IAccountService {
     public Account GetAccountByEmail(String email);
     public void CreateAccount(Account account);
     public String createManager(RegisterDTO registerDTO);
+    public String createEmployee(RegisterDTO registerDTO);
     public List<AccountResponseDTO> viewAllCustomerAccount();
     public List<AccountResponseDTO> viewAllCustomerAccountByEmailOrFullName();
     public List<AccountResponseDTO> viewAllStaffAccount();

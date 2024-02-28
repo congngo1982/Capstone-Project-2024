@@ -1,5 +1,6 @@
 package sse.edu.SPR2024.api.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,11 +11,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import sse.edu.SPR2024.dto.AccountResponseDTO;
 import sse.edu.SPR2024.dto.AuthResponseDTO;
+import sse.edu.SPR2024.dto.RegisterDTO;
 import sse.edu.SPR2024.entity.Account;
 import sse.edu.SPR2024.security.Bcrypt;
 import sse.edu.SPR2024.security.JWTGenerator;
 import sse.edu.SPR2024.service.IAccountService;
-
+import sse.edu.SPR2024.service.impl.AccountService;
+import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 
 @RestController
@@ -59,5 +62,10 @@ public class AccountController {
     public ResponseEntity<List<AccountResponseDTO>> viewAllCustomerAccount(){
         List<AccountResponseDTO> list= accountService.viewAllCustomerAccount();
         return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+    @PostMapping("/accounts/employees")
+    public ResponseEntity<RegisterDTO> createManager(@Valid @RequestBody RegisterDTO registerDTO){
+        accountService.createEmployee(registerDTO);
+        return new ResponseEntity<>(registerDTO, HttpStatus.OK);
     }
 }

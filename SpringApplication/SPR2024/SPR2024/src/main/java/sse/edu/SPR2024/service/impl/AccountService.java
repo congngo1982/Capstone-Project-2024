@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import sse.edu.SPR2024.dto.AccountResponseDTO;
 import sse.edu.SPR2024.dto.RegisterDTO;
 import sse.edu.SPR2024.entity.Account;
+import sse.edu.SPR2024.entity.AccountRole;
 import sse.edu.SPR2024.entity.Role;
 import sse.edu.SPR2024.exception.CustomException;
 import sse.edu.SPR2024.repository.IAccountRepository;
@@ -115,5 +116,43 @@ public class AccountService implements IAccountService {
     @Override
     public List<AccountResponseDTO> viewAllStaffAccount() {
         return null;
+    }
+    @Override
+    public String createEmployee(RegisterDTO registerDTO) {
+
+        //check if manager exists
+
+        if(accountRepository.existsByUserId(registerDTO.getUserId())){
+            throw  new CustomException(HttpStatus.BAD_REQUEST,"UserId already exists!");
+        }
+        if(accountRepository.existsByEmail(registerDTO.getEmail())){
+            throw  new CustomException(HttpStatus.BAD_REQUEST,"Email already exists!");
+        }
+        //create employee
+        Account account= new Account();
+        account.setUserId(registerDTO.getUserId());
+        account.setEmail(registerDTO.getEmail());
+        account.setFullName(registerDTO.getFullName());
+        account.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
+        account.setAge(registerDTO.getAge());
+        account.setAddress(registerDTO.getAddress());
+        account.setBirthDate(registerDTO.getBirthDate());
+        account.setGender(registerDTO.getGender());
+
+        //create role for employee
+      //  Set<Role> roles= new HashSet<>();
+        Role role= roleRepository.findByName("ROLE_EMPLOYEE")
+                .orElseThrow(()->new CustomException(HttpStatus.BAD_REQUEST,"This role does not exists!"));
+        AccountRole accountRole = new AccountRole();
+        accountRole.setAccount(account);
+        accountRole.setRole(role);
+        Set<AccountRole> roles = new HashSet<>();
+        roles.add(accountRole);
+        account.setRoles(roles);
+        //account.setRoles(roles);
+        //save to database
+        accountRepository.save(account);
+        //
+        return "Manager register is successful!!";
     }
 }
