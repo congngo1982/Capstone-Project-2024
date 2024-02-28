@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import sse.edu.SPR2024.dto.AccountResponseDTO;
 import sse.edu.SPR2024.dto.RegisterDTO;
 import sse.edu.SPR2024.entity.Account;
 import sse.edu.SPR2024.entity.Role;
@@ -16,6 +17,7 @@ import sse.edu.SPR2024.service.IAccountService;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class AccountService implements IAccountService {
@@ -55,48 +57,63 @@ public class AccountService implements IAccountService {
     public String createManager(RegisterDTO registerDTO) {
 
         //check if manager exists
-//        if (accountRepository.existsByUserId(registerDTO.getUserId())) {
-//            throw new CustomException(HttpStatus.BAD_REQUEST, "UserId already exists!");
-//        }
-//        if (accountRepository.existsByEmail(registerDTO.getEmail())) {
-//            throw new CustomException(HttpStatus.BAD_REQUEST, "Email already exists!");
-//        }
-//        //create manager
-//        Account account = new Account();
-//        account.setUserId(registerDTO.getUserId());
-//        account.setEmail(registerDTO.getEmail());
-//        account.setFullName(registerDTO.getFullName());
-//        account.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
-//        account.setAge(registerDTO.getAge());
-//        account.setAddress(registerDTO.getAddress());
-//        account.setBirthDate(registerDTO.getBirthDate());
-//        account.setGender(registerDTO.getGender());
-//
-//        //create role for manager
-//        Set<Role> roles = new HashSet<>();
-//        Role role = roleRepository.findByName("ROLE_MANAGER")
-//                .orElseThrow(() -> new CustomException(HttpStatus.BAD_REQUEST, "This role does not exists!"));
-//        roles.add(role);
-//        account.setRoles(roles);
-//        //save to database
-//        accountRepository.save(account);
+
+        if(accountRepository.existsByUserId(registerDTO.getUserId())){
+            throw  new CustomException(HttpStatus.BAD_REQUEST,"UserId already exists!");
+        }
+        if(accountRepository.existsByEmail(registerDTO.getEmail())){
+            throw  new CustomException(HttpStatus.BAD_REQUEST,"Email already exists!");
+        }
+        //create manager
+        Account account= new Account();
+        account.setUserId(registerDTO.getUserId());
+        account.setEmail(registerDTO.getEmail());
+        account.setFullName(registerDTO.getFullName());
+        account.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
+        account.setAge(registerDTO.getAge());
+        account.setAddress(registerDTO.getAddress());
+        account.setBirthDate(registerDTO.getBirthDate());
+        account.setGender(registerDTO.getGender());
+
+        //create role for manager
+        Set<Role> roles= new HashSet<>();
+        Role role= roleRepository.findByName("ROLE_MANAGER")
+                .orElseThrow(()->new CustomException(HttpStatus.BAD_REQUEST,"This role does not exists!"));
+        roles.add(role);
+        //account.setRoles(roles);
+        //save to database
+        accountRepository.save(account);
         //
         return "Manager register is successful!!";
     }
 
     @Override
-    public List<Account> viewAllCustomerAccount() {
+    public List<AccountResponseDTO> viewAllCustomerAccount() {
 
+        //find all role to search
+        Set<Role> roles= new HashSet<>();
+        Role mentorRole= roleRepository.findByName("ROLE_MENTOR").get();
+        Role learnerRole= roleRepository.findByName("ROLE_LEARNER").get();
+        roles.add(mentorRole);
+        roles.add(learnerRole);
+        //find account list
+        //List<Account> customerAccountList=accountRepository.findByRolesIn(roles);
+        List<Account> customerAccountList=accountRepository.findAll();
+        //change to dto
+        List<AccountResponseDTO> accountResponseDTOList=customerAccountList.stream()
+                .map(account->modelMapper.map(account,AccountResponseDTO.class))
+                .collect(Collectors.toList());
+        //return list account dto
+        return accountResponseDTOList;
+    }
+
+    @Override
+    public List<AccountResponseDTO> viewAllCustomerAccountByEmailOrFullName() {
         return null;
     }
 
     @Override
-    public List<Account> viewAllCustomerAccountByEmailOrFullName() {
-        return null;
-    }
-
-    @Override
-    public List<Account> viewAllStaffAccount() {
+    public List<AccountResponseDTO> viewAllStaffAccount() {
         return null;
     }
 }

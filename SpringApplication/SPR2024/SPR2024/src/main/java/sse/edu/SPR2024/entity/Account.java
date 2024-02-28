@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
-import java.util.Set;
 
 @Entity
 @Getter@Setter
@@ -34,14 +33,10 @@ public class Account {
 
     // set many to one to other table----------------------------------------
 
-//    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-//    @JoinTable(name = "users_roles",
-//            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "role_id"),
-//            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "userId")
-//    )
     @OneToMany(mappedBy = "account")
     @JsonIgnore
     private Set<AccountRole> roles;
+
 
     //learner
     @OneToOne(mappedBy = "account",cascade = CascadeType.ALL)
