@@ -21,7 +21,6 @@ public class Project {
 
     @Id
     private String id;
-
     private String introVideoUrl;
     private String goal;
     private String ageRecomment;

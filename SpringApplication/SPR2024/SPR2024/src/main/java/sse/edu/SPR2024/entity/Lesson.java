@@ -17,6 +17,7 @@ import java.util.List;
 public class Lesson {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String description;
     private String videoUrl;

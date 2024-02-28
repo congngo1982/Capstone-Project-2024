@@ -12,7 +12,8 @@ public class AccountService implements IAccountService {
     private IAccountRepository accountRepository;
     @Override
     public Account GetAccountByEmail(String email) {
-        Account account = accountRepository.getAccountByEmail(email).orElseThrow(() -> new RuntimeException("Cannot Get Account"));
+        Account account = accountRepository.getAccountByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Cannot Get Account"));
         return account;
     }
 

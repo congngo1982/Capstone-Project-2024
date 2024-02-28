@@ -19,7 +19,6 @@ public class Quizz {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private boolean isPass;
     private String title;
     private Long duration;
