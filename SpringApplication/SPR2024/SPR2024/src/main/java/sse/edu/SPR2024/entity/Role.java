@@ -22,4 +22,8 @@ public class Role {
     private Long id;
     private String name;
 
+    // role
+    @OneToMany(mappedBy = "role")
+    @JsonIgnore
+    private List<Account> accounts;
 }
