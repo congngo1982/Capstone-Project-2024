@@ -20,6 +20,7 @@ public class Organization {
     @Id
     private  String id;
     private String logoUrl;
+    private  String name;
 
     //connect to other
     //learner
