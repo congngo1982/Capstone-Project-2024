@@ -26,6 +26,4 @@ public class Role {
     @OneToMany(mappedBy = "role")
     @JsonIgnore
     private Set<AccountRole> roles;
-
-
 }

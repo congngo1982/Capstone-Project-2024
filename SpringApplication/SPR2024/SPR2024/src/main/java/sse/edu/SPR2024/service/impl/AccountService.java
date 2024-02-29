@@ -8,9 +8,11 @@ import org.springframework.stereotype.Service;
 import sse.edu.SPR2024.dto.AccountResponseDTO;
 import sse.edu.SPR2024.dto.RegisterDTO;
 import sse.edu.SPR2024.entity.Account;
+import sse.edu.SPR2024.entity.AccountRole;
 import sse.edu.SPR2024.entity.Role;
 import sse.edu.SPR2024.exception.CustomException;
 import sse.edu.SPR2024.repository.IAccountRepository;
+import sse.edu.SPR2024.repository.IAccountRoleRepository;
 import sse.edu.SPR2024.repository.IRoleRepository;
 import sse.edu.SPR2024.service.IAccountService;
 
@@ -30,14 +32,8 @@ public class AccountService implements IAccountService {
     private IRoleRepository roleRepository;
     @Autowired
     private ModelMapper modelMapper;
-
-//    @Autowired
-//    public AccountService(IAccountRepository accountRepository, PasswordEncoder passwordEncoder, IRoleRepository roleRepository, ModelMapper modelMapper) {
-//        this.accountRepository = accountRepository;
-//        this.passwordEncoder = passwordEncoder;
-//        this.roleRepository=roleRepository;
-//        this.modelMapper=modelMapper;
-//    }
+    @Autowired
+    private IAccountRoleRepository accountRoleRepository;
 
     @Override
     public Account GetAccountByEmail(String email) {
@@ -57,7 +53,121 @@ public class AccountService implements IAccountService {
     public String createManager(RegisterDTO registerDTO) {
 
         //check if manager exists
+        if(accountRepository.existsByUserId(registerDTO.getUserId())){
+            throw  new CustomException(HttpStatus.BAD_REQUEST,"UserId already exists!");
+        }
+        if(accountRepository.existsByEmail(registerDTO.getEmail())){
+            throw  new CustomException(HttpStatus.BAD_REQUEST,"Email already exists!");
+        }
 
+        //create manager
+        Account account= new Account();
+        account.setUserId(registerDTO.getUserId());
+        account.setEmail(registerDTO.getEmail());
+        account.setFullName(registerDTO.getFullName());
+        account.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
+        account.setAge(registerDTO.getAge());
+        account.setAddress(registerDTO.getAddress());
+        account.setBirthDate(registerDTO.getBirthDate());
+        account.setGender(registerDTO.getGender());
+
+        //create role for manager
+        Role role= roleRepository.findByName("ROLE_MANAGER")
+                .orElseThrow(()->new CustomException(HttpStatus.BAD_REQUEST,"This role does not exists!"));
+        //add role to account role
+        AccountRole accountRole= new AccountRole();
+        accountRole.setAccount(account);
+        accountRole.setRole(role);
+
+        //save to database
+        //save account
+        accountRepository.save(account);
+        //save account role
+        accountRoleRepository.save(accountRole);
+
+        //return message
+        return "Manager register is successful!!";
+    }
+
+    @Override
+    public String createLearner(RegisterDTO registerDTO) {
+        return null;
+    }
+
+    @Override
+    public String createMentor(RegisterDTO registerDTO) {
+        return null;
+    }
+
+    @Override
+    public String createEmployee(RegisterDTO registerDTO) {
+        return null;
+    }
+
+    @Override
+    public String createModerator(RegisterDTO registerDTO) {
+        return null;
+    }
+
+    @Override
+    public List<AccountResponseDTO> viewAllCustomerAccounts() {
+        //find all role to search
+        Set<Role> roles= new HashSet<>();
+        Role mentorRole= roleRepository.findByName("ROLE_LEARNER").get();
+        Role learnerRole= roleRepository.findByName("ROLE_MENTOR").get();
+        roles.add(mentorRole);
+        roles.add(learnerRole);
+        //find all by account role
+        Set<AccountRole> accountRoles = accountRoleRepository.findAllByRoleIn(roles);
+        //find account list
+        List<Account> customerAccountList=accountRepository.findByRolesIn(accountRoles);
+        //change to dto
+        List<AccountResponseDTO> accountResponseDTOList=customerAccountList.stream()
+                .map(account->mapToAccountResponseDto(account))
+                .collect(Collectors.toList());
+        //return list account dto
+        return accountResponseDTOList;
+    }
+
+    @Override
+    public List<AccountResponseDTO> viewAllCustomerAccountsByEmailOrFullName() {
+        return null;
+    }
+
+    @Override
+    public List<AccountResponseDTO> viewAllStaffAccounts() {
+
+        return null;
+    }
+
+    @Override
+    public List<AccountResponseDTO> viewAllAccounts() {
+        return null;
+    }
+
+    private AccountResponseDTO mapToAccountResponseDto(Account account){
+        AccountResponseDTO accountResponseDTO= new AccountResponseDTO();
+        accountResponseDTO.setUserId(account.getUserId());
+        accountResponseDTO.setAddress(account.getAddress());
+        accountResponseDTO.setAge(account.getAge());
+        accountResponseDTO.setBirthDate(account.getBirthDate());
+        accountResponseDTO.setEmail(account.getEmail());
+        accountResponseDTO.setFullName(account.getFullName());
+        accountResponseDTO.setGender(account.getGender());
+        // set role for account
+        Set<Role> roles= new HashSet<>();
+        //find all accountRole
+        Set<AccountRole> accountRoles= accountRoleRepository.findAllByAccount(account);
+        for (AccountRole accountRole:accountRoles) {
+            Role role= roleRepository.findById(accountRole.getRole().getId()).get();
+            roles.add(role);
+        }
+        accountResponseDTO.setRoles(roles);
+        //return account
+        return accountResponseDTO;
+    }
+    private String createNewAccount(RegisterDTO registerDTO, String roleSetting, String message){
+        //check if manager exists
         if(accountRepository.existsByUserId(registerDTO.getUserId())){
             throw  new CustomException(HttpStatus.BAD_REQUEST,"UserId already exists!");
         }
@@ -74,46 +184,21 @@ public class AccountService implements IAccountService {
         account.setAddress(registerDTO.getAddress());
         account.setBirthDate(registerDTO.getBirthDate());
         account.setGender(registerDTO.getGender());
-
         //create role for manager
-        Set<Role> roles= new HashSet<>();
-        Role role= roleRepository.findByName("ROLE_MANAGER")
+        Role role= roleRepository.findByName(roleSetting)
                 .orElseThrow(()->new CustomException(HttpStatus.BAD_REQUEST,"This role does not exists!"));
-        roles.add(role);
-        //account.setRoles(roles);
+        //add role to account role
+        AccountRole accountRole= new AccountRole();
+        accountRole.setAccount(account);
+        accountRole.setRole(role);
+
         //save to database
+        //save account
         accountRepository.save(account);
-        //
-        return "Manager register is successful!!";
-    }
+        //save account role
+        accountRoleRepository.save(accountRole);
 
-    @Override
-    public List<AccountResponseDTO> viewAllCustomerAccount() {
-
-        //find all role to search
-        Set<Role> roles= new HashSet<>();
-        Role mentorRole= roleRepository.findByName("ROLE_MENTOR").get();
-        Role learnerRole= roleRepository.findByName("ROLE_LEARNER").get();
-        roles.add(mentorRole);
-        roles.add(learnerRole);
-        //find account list
-        //List<Account> customerAccountList=accountRepository.findByRolesIn(roles);
-        List<Account> customerAccountList=accountRepository.findAll();
-        //change to dto
-        List<AccountResponseDTO> accountResponseDTOList=customerAccountList.stream()
-                .map(account->modelMapper.map(account,AccountResponseDTO.class))
-                .collect(Collectors.toList());
-        //return list account dto
-        return accountResponseDTOList;
-    }
-
-    @Override
-    public List<AccountResponseDTO> viewAllCustomerAccountByEmailOrFullName() {
-        return null;
-    }
-
-    @Override
-    public List<AccountResponseDTO> viewAllStaffAccount() {
-        return null;
+        //return message
+        return  message+"register is successful!!";
     }
 }

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Getter@Setter
@@ -36,7 +37,6 @@ public class Account {
     @OneToMany(mappedBy = "account")
     @JsonIgnore
     private Set<AccountRole> roles;
-
 
     //learner
     @OneToOne(mappedBy = "account",cascade = CascadeType.ALL)

@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import sse.edu.SPR2024.dto.AccountResponseDTO;
 import sse.edu.SPR2024.dto.AuthResponseDTO;
+import sse.edu.SPR2024.dto.RegisterDTO;
 import sse.edu.SPR2024.entity.Account;
 import sse.edu.SPR2024.security.Bcrypt;
 import sse.edu.SPR2024.security.JWTGenerator;
@@ -28,8 +29,6 @@ public class AccountController {
     @Autowired
     private JWTGenerator jwtGenerator;
 
-
-
     @PostMapping("/auth/account_create")
     public ResponseEntity<String> CreateAccount() {
         //Account account = new Account("ngonc", "ngonc@gmail.com", Bcrypt.hashPassword("ngonc"), "NgoNC", null, null, null, null, null);
@@ -40,7 +39,7 @@ public class AccountController {
 
     @GetMapping("/auth/getAccount")
     public ResponseEntity<Account> GetAccount() {
-        System.out.println("KAKAKA");
+        //System.out.println("KAKAKA");
         Account account = accountService.GetAccountByEmail("ngonc@gmail.com");
         return new ResponseEntity<>(account, HttpStatus.OK);
     }
@@ -55,9 +54,17 @@ public class AccountController {
         return new ResponseEntity<>(new AuthResponseDTO(token), HttpStatus.OK);
     }
 
-    @PostMapping("/accounts/customers")
+    @GetMapping("/accounts/customers")
     public ResponseEntity<List<AccountResponseDTO>> viewAllCustomerAccount(){
-        List<AccountResponseDTO> list= accountService.viewAllCustomerAccount();
+        System.out.println("HEHE");
+        List<AccountResponseDTO> list= accountService.viewAllCustomerAccounts();
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
+
+    @PostMapping("/accounts/managers")
+    public ResponseEntity<String> createManager(@RequestBody RegisterDTO registerDTO){
+        String response= accountService.createManager(registerDTO);
+        return new ResponseEntity<String>(response, HttpStatus.CREATED);
+    }
+
 }

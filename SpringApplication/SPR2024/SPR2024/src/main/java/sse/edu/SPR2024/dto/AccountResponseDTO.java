@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import sse.edu.SPR2024.entity.AccountRole;
 import sse.edu.SPR2024.entity.Role;
+
 import java.util.Date;
 import java.util.Set;
 
@@ -15,7 +17,6 @@ import java.util.Set;
 public class AccountResponseDTO {
     private String userId;
     private String email;
-    private String password;
     private String fullName;
     private String address;
     private String gender;

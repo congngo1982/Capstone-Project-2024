@@ -11,9 +11,13 @@ public interface IAccountService {
     public Account GetAccountByEmail(String email);
     public void CreateAccount(Account account);
     public String createManager(RegisterDTO registerDTO);
-    public List<AccountResponseDTO> viewAllCustomerAccount();
-    public List<AccountResponseDTO> viewAllCustomerAccountByEmailOrFullName();
-    public List<AccountResponseDTO> viewAllStaffAccount();
+    public String createLearner(RegisterDTO registerDTO);
+    public String createMentor(RegisterDTO registerDTO);
+    public String createEmployee(RegisterDTO registerDTO);
+    public String createModerator(RegisterDTO registerDTO);
 
-
+    public List<AccountResponseDTO> viewAllCustomerAccounts();
+    public List<AccountResponseDTO> viewAllCustomerAccountsByEmailOrFullName();
+    public List<AccountResponseDTO> viewAllStaffAccounts();
+    public List<AccountResponseDTO> viewAllAccounts();
 }
