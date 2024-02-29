@@ -2,6 +2,7 @@ package sse.edu.SPR2024.service;
 
 import org.springframework.stereotype.Service;
 import sse.edu.SPR2024.dto.AccountResponseDTO;
+import sse.edu.SPR2024.dto.ModeratorDTO;
 import sse.edu.SPR2024.dto.RegisterDTO;
 import sse.edu.SPR2024.entity.Account;
 
@@ -15,6 +16,7 @@ public interface IAccountService {
     public List<AccountResponseDTO> viewAllCustomerAccount();
     public List<AccountResponseDTO> viewAllCustomerAccountByEmailOrFullName();
     public List<AccountResponseDTO> viewAllStaffAccount();
+    public String createModerator(ModeratorDTO moderatorDTO) ;
 
 
 }

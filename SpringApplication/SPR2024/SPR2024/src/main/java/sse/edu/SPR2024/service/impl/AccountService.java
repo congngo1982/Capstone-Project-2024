@@ -6,14 +6,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import sse.edu.SPR2024.dto.AccountResponseDTO;
+import sse.edu.SPR2024.dto.ModeratorDTO;
 import sse.edu.SPR2024.dto.RegisterDTO;
-import sse.edu.SPR2024.entity.Account;
-import sse.edu.SPR2024.entity.AccountRole;
-import sse.edu.SPR2024.entity.Role;
+import sse.edu.SPR2024.entity.*;
 import sse.edu.SPR2024.exception.CustomException;
-import sse.edu.SPR2024.repository.IAccountRepository;
-import sse.edu.SPR2024.repository.IAccountRoleRepository;
-import sse.edu.SPR2024.repository.IRoleRepository;
+import sse.edu.SPR2024.repository.*;
 import sse.edu.SPR2024.service.IAccountService;
 
 import java.util.HashSet;
@@ -34,6 +31,10 @@ public class AccountService implements IAccountService {
     private IAccountRoleRepository accountRoleRepository;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private IModeratorRepository moderatorRepository;
+    @Autowired
+    private IOrganizationRepository organizationRepository;
 
 //    @Autowired
 //    public AccountService(IAccountRepository accountRepository, PasswordEncoder passwordEncoder, IRoleRepository roleRepository, ModelMapper modelMapper) {
@@ -141,7 +142,7 @@ public class AccountService implements IAccountService {
         account.setAddress(registerDTO.getAddress());
         account.setBirthDate(registerDTO.getBirthDate());
         account.setGender(registerDTO.getGender());
-
+        account.setStatus("ACTIVE");
         //create role for employee
         Role role= roleRepository.findByName("ROLE_EMPLOYEE")
                 .orElseThrow(()->new CustomException(HttpStatus.BAD_REQUEST,"This role does not exists!"));
@@ -155,6 +156,63 @@ public class AccountService implements IAccountService {
         accountRoleRepository.save(accountRole);
 
         //
-        return "Manager register is successful!!";
+        return "Employee register is successful!!";
+    }
+    @Override
+    public String createModerator(ModeratorDTO moderatorDTO) {
+
+        //check if moderator exists
+
+        if(accountRepository.existsByUserId(moderatorDTO.getUserId())){
+            throw  new CustomException(HttpStatus.BAD_REQUEST,"UserId already exists!");
+        }
+        if(accountRepository.existsByEmail(moderatorDTO.getEmail())){
+            throw  new CustomException(HttpStatus.BAD_REQUEST,"Email already exists!");
+        }
+        if(moderatorRepository.existsById(moderatorDTO.getModeratorId())){
+            throw  new CustomException(HttpStatus.BAD_REQUEST,"Moderator already exists!");
+        }
+        if(organizationRepository.existsById(moderatorDTO.getOrganizationId())){
+            throw  new CustomException(HttpStatus.BAD_REQUEST,"Organization already exists!");
+        }
+        //create user
+        Account account= new Account();
+        account.setUserId(moderatorDTO.getUserId());
+        account.setEmail(moderatorDTO.getEmail());
+        account.setFullName(moderatorDTO.getFullName());
+        account.setPassword(passwordEncoder.encode(moderatorDTO.getPassword()));
+        account.setAge(moderatorDTO.getAge());
+        account.setAddress(moderatorDTO.getAddress());
+        account.setBirthDate(moderatorDTO.getBirthDate());
+        account.setGender(moderatorDTO.getGender());
+        account.setStatus("ACTIVE");
+        //create organization
+        Organization organization = new Organization();
+        organization.setId(moderatorDTO.getOrganizationId());
+        organization.setLogoUrl(moderatorDTO.getLogoUrl());
+        organization.setName(moderatorDTO.getOrganizationName());
+        //create moderator
+        Moderator moderator = new Moderator();
+        moderator.setId(moderatorDTO.getModeratorId());
+        //connect
+        moderator.setAccount(account);
+        moderator.setOrganization(organization);
+        organization.setModerator(moderator);
+        account.setModerator(moderator);
+        //create role for moderator
+        Role role= roleRepository.findByName("ROLE_MODERATOR")
+                .orElseThrow(()->new CustomException(HttpStatus.BAD_REQUEST,"This role does not exists!"));
+        AccountRole accountRole = new AccountRole();
+        accountRole.setAccount(account);
+        accountRole.setRole(role);
+        Set<AccountRole> roles = new HashSet<>();
+        roles.add(accountRole);
+        account.setRoles(roles);
+        accountRepository.save(account);
+        accountRoleRepository.save(accountRole);
+        moderatorRepository.save(moderator);
+        organizationRepository.save(organization);
+        //
+        return "Moderator register is successful!!";
     }
 }

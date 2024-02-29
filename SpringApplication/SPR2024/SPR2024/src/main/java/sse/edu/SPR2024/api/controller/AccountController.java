@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import sse.edu.SPR2024.dto.AccountResponseDTO;
 import sse.edu.SPR2024.dto.AuthResponseDTO;
+import sse.edu.SPR2024.dto.ModeratorDTO;
 import sse.edu.SPR2024.dto.RegisterDTO;
 import sse.edu.SPR2024.entity.Account;
 import sse.edu.SPR2024.security.Bcrypt;
@@ -64,8 +65,13 @@ public class AccountController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
     @PostMapping("/accounts/employees")
-    public ResponseEntity<RegisterDTO> createManager(@Valid @RequestBody RegisterDTO registerDTO){
+    public ResponseEntity<RegisterDTO> createEmployee(@Valid @RequestBody RegisterDTO registerDTO){
         accountService.createEmployee(registerDTO);
         return new ResponseEntity<>(registerDTO, HttpStatus.OK);
+    }
+    @PostMapping("/accounts/moderators")
+    public ResponseEntity<ModeratorDTO> createModerator(@Valid @RequestBody ModeratorDTO moderatorDTO){
+        accountService.createModerator(moderatorDTO);
+        return new ResponseEntity<>(moderatorDTO, HttpStatus.OK);
     }
 }

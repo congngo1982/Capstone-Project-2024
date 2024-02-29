@@ -31,7 +31,7 @@ public class Account {
     private Integer age;
     private Date birthDate;
     private String currentLoginAddress;
-
+    private String status;
     // set many to one to other table----------------------------------------
 
     @OneToMany(mappedBy = "account")
