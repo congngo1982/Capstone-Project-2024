@@ -22,4 +22,5 @@ public class AccountResponseDTO {
     private Integer age;
     private Date birthDate;
     private Set<Role> roles;
+    private String status;
 }
