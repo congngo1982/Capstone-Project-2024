@@ -74,4 +74,16 @@ public class AccountController {
         accountService.createModerator(moderatorDTO);
         return new ResponseEntity<>(moderatorDTO, HttpStatus.OK);
     }
+    @PutMapping("/accounts/activate")
+    public ResponseEntity<AccountResponseDTO> activateAccount(@RequestBody AccountResponseDTO accountResponseDTO){
+        accountService.activateAccount(accountResponseDTO.getUserId());
+        accountResponseDTO.setStatus("ACTIVE");
+        return new ResponseEntity<>(accountResponseDTO,HttpStatus.OK);
+    }
+    @PutMapping("/accounts/inactivate")
+    public ResponseEntity<AccountResponseDTO> inactivateAccount(@RequestBody AccountResponseDTO accountResponseDTO){
+        accountService.inactivateAccount(accountResponseDTO.getUserId());
+        accountResponseDTO.setStatus("INACTIVE");
+        return new ResponseEntity<>(accountResponseDTO,HttpStatus.OK);
+    }
 }

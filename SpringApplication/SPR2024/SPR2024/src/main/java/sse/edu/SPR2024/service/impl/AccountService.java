@@ -15,6 +15,7 @@ import sse.edu.SPR2024.service.IAccountService;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -214,5 +215,19 @@ public class AccountService implements IAccountService {
         organizationRepository.save(organization);
         //
         return "Moderator register is successful!!";
+    }
+    @Override
+    public String activateAccount(String id){
+       Account account = accountRepository.getAccountByUserId(id);
+        account.setStatus("ACTIVE");
+        accountRepository.save(account);
+        return  "Activate Successfully";
+    }
+    @Override
+    public String inactivateAccount(String id){
+        Account account = accountRepository.getAccountByUserId(id);
+        account.setStatus("INACTIVE");
+        accountRepository.save(account);
+        return  "Inactivate Successfully";
     }
 }

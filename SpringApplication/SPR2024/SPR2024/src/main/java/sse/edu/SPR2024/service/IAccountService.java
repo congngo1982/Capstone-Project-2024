@@ -17,6 +17,7 @@ public interface IAccountService {
     public List<AccountResponseDTO> viewAllCustomerAccountByEmailOrFullName();
     public List<AccountResponseDTO> viewAllStaffAccount();
     public String createModerator(ModeratorDTO moderatorDTO) ;
-
+    public String activateAccount (String id);
+    public String inactivateAccount (String id);
 
 }
