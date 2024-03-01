@@ -1,5 +1,6 @@
 package sse.edu.SPR2024.api.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,10 @@ public class AccountController {
         return new ResponseEntity<>("Account Create Successfully", HttpStatus.OK);
     }
 
+    // add require for jwt authentication in swagger
+    @SecurityRequirement(
+            name = "Bear Authentication"
+    )
     @GetMapping("/auth/getAccount")
     public ResponseEntity<Account> GetAccount() {
         Account account = accountService.GetAccountByEmail("ngonc@gmail.com");
