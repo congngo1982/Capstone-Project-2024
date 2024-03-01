@@ -11,13 +11,11 @@ public interface IAccountService {
     public Account GetAccountByEmail(String email);
     public void CreateAccount(Account account);
     public String createManager(RegisterDTO registerDTO);
-    public String createLearner(RegisterDTO registerDTO);
-    public String createMentor(RegisterDTO registerDTO);
-    public String createEmployee(RegisterDTO registerDTO);
-    public String createModerator(RegisterDTO registerDTO);
+    public List<AccountResponseDTO> viewAllActiveAccounts();
+    public List<AccountResponseDTO> viewAllInactiveAccounts();
+    public AccountResponseDTO activateAccount(String accountId);
+    public AccountResponseDTO deactivateAccount(String accountId);
+    public AccountResponseDTO viewAccountByEmail();
+    public List<AccountResponseDTO> viewAllAccountsByRole();
 
-    public List<AccountResponseDTO> viewAllCustomerAccounts();
-    public List<AccountResponseDTO> viewAllCustomerAccountsByEmailOrFullName();
-    public List<AccountResponseDTO> viewAllStaffAccounts();
-    public List<AccountResponseDTO> viewAllAccounts();
 }

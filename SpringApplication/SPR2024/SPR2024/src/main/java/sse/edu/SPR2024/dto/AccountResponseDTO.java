@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import sse.edu.SPR2024.entity.AccountRole;
 import sse.edu.SPR2024.entity.Role;
 
 import java.util.Date;
@@ -22,5 +21,6 @@ public class AccountResponseDTO {
     private String gender;
     private Integer age;
     private Date birthDate;
-    private Set<Role> roles;
+    private Role role;
+    private boolean status;
 }

@@ -1,19 +1,16 @@
 package sse.edu.SPR2024.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
-import java.util.Set;
 
 @Entity
-@Getter@Setter
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "gcp_account")
@@ -30,24 +27,28 @@ public class Account {
     private String gender;
     private Integer age;
     private Date birthDate;
+    private boolean status;
     private String currentLoginAddress;
 
     // set many to one to other table----------------------------------------
 
-    @OneToMany(mappedBy = "account")
-    @JsonIgnore
-    private Set<AccountRole> roles;
-
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", length = 20, nullable = false)
+    private Role role;
     //learner
-    @OneToOne(mappedBy = "account",cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
     private Learner learner;
 
     //moderator
-    @OneToOne(mappedBy = "account",cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
     private Moderator moderator;
 
     //mentor
-    @OneToOne(mappedBy = "account",cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
     private Mentor mentor;
+
+    public String GetRoleName(){
+        return role.name();
+    }
 
 }
