@@ -28,14 +28,6 @@ public class AccountService implements IAccountService {
     @Autowired
     private ModelMapper modelMapper;
 
-//    @Autowired
-//    public AccountService(IAccountRepository accountRepository, PasswordEncoder passwordEncoder, IRoleRepository roleRepository, ModelMapper modelMapper) {
-//        this.accountRepository = accountRepository;
-//        this.passwordEncoder = passwordEncoder;
-//        this.roleRepository=roleRepository;
-//        this.modelMapper=modelMapper;
-//    }
-
     @Override
     public Account GetAccountByEmail(String email) {
         Account account = accountRepository.getAccountByEmail(email)
