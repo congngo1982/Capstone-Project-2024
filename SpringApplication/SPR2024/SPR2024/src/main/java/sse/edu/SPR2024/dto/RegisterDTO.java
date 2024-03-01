@@ -1,9 +1,14 @@
 package sse.edu.SPR2024.dto;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import sse.edu.SPR2024.entity.Role;
 
 import java.util.Date;
 
@@ -20,4 +25,6 @@ public class RegisterDTO {
     private String gender;
     private Integer age;
     private Date birthDate;
+    private boolean status;
+    private Role role;
 }

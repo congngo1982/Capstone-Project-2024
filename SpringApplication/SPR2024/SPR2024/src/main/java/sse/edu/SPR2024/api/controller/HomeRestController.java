@@ -24,6 +24,7 @@ public class HomeRestController {
         }catch (UnknownHostException ex){
             ipAddress += " - " + ex.getMessage();
         }
+        System.out.println("Haha");
         return ipAddress;
     }
 }

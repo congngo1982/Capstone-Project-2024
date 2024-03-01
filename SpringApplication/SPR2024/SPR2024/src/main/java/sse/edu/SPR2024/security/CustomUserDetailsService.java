@@ -9,8 +9,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import sse.edu.SPR2024.entity.Account;
-import sse.edu.SPR2024.entity.Role;
-import sse.edu.SPR2024.service.IRoleService;
 import sse.edu.SPR2024.service.IAccountService;
 
 import java.util.ArrayList;
@@ -23,24 +21,19 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
     private IAccountService accountService;
-    @Autowired
-    private IRoleService roleService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Account user = accountService.GetAccountByEmail(username);
-        System.out.println("Custom User: " + user.getEmail());
-        List<Role> roles = roleService.getRoleByAccountEmail(user.getEmail());
+        List<String> roles = new ArrayList<>();
         try{
-            System.out.println("Custom User: OK" + roles.get(0).getName());
+            roles.add(user.GetRoleName());
         }catch (Exception e){
-            System.out.println("CC");
         }
-        List<Role> role = roles != null && roles.size() > 0 ? roles : new ArrayList<>();
-        return new User(user.getEmail(), user.getPassword(), mapRolesToAuthorities(role));
+        return new User(user.getEmail(), user.getPassword(), mapRolesToAuthorities(roles));
     }
 
-    private Collection<GrantedAuthority> mapRolesToAuthorities(List<Role> roles) {
-        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
+    private Collection<GrantedAuthority> mapRolesToAuthorities(List<String> roles) {
+        return roles.stream().map(role -> new SimpleGrantedAuthority(role)).collect(Collectors.toList());
     }
 }

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import sse.edu.SPR2024.entity.Role;
+
 import java.util.Date;
 import java.util.Set;
 
@@ -15,12 +16,11 @@ import java.util.Set;
 public class AccountResponseDTO {
     private String userId;
     private String email;
-    private String password;
     private String fullName;
     private String address;
     private String gender;
     private Integer age;
     private Date birthDate;
-    private Set<Role> roles;
-    private String status;
+    private Role role;
+    private boolean status;
 }
